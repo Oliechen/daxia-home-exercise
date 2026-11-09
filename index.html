@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大俠中醫・居家小運動</title>
+<style>
+  :root{
+    --ink:#1d2433; --muted:#5b6475; --bg:#f6f3ec; --card:#ffffff;
+    --navy:#1f3a7a; --red:#c0392b; --line:#e2ddd2; --chip:#eef2fb; --ok:#2e7d32;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+    font-size:20px;line-height:1.55}
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px 48px}
+  header{background:var(--navy);color:#fff;padding:22px 16px 18px}
+  header .wrap{padding-bottom:0}
+  header h1{margin:0;font-size:30px;letter-spacing:2px}
+  header p{margin:6px 0 0;font-size:18px;opacity:.9}
+  h2{font-size:24px;margin:26px 0 12px}
+  .step{display:inline-block;background:var(--red);color:#fff;border-radius:999px;
+    width:34px;height:34px;line-height:34px;text-align:center;font-size:20px;margin-right:8px}
+
+  /* 症狀按鈕 */
+  .sym{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .sym button{font:inherit;font-size:21px;text-align:left;padding:14px 14px;min-height:76px;
+    border:2px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);
+    display:flex;align-items:center;gap:10px;cursor:pointer}
+  .sym button .e{font-size:30px;flex:none}
+  .sym button[aria-pressed="true"]{border-color:var(--navy);background:var(--chip);
+    box-shadow:0 0 0 2px var(--navy) inset}
+  .sym button.all{grid-column:1 / -1;justify-content:center;min-height:60px}
+
+  /* 結果 */
+  #hint{background:#fff7e0;border:1px solid #ecd9a0;border-radius:14px;padding:12px 14px;
+    font-size:19px;margin:0 0 12px;display:none}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:16px;margin:0 0 14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .card h3{margin:0 0 6px;font-size:24px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+  .tag{font-size:16px;background:var(--chip);color:var(--navy);border-radius:999px;padding:3px 12px}
+  .tag.pose{background:#f3ece0;color:#7a5a1f}
+  .for{margin:0 0 6px;font-size:20px}
+  .for b{color:var(--navy)}
+  .note{margin:0 0 10px;font-size:17px;color:var(--muted)}
+  .row{display:flex;gap:10px;align-items:stretch}
+  a.play{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--red);color:#fff;text-decoration:none;font-size:23px;font-weight:700;
+    border-radius:14px;min-height:64px}
+  button.done{font:inherit;font-size:18px;border:2px solid var(--line);background:#fff;
+    border-radius:14px;padding:0 14px;min-width:110px;color:var(--muted);cursor:pointer}
+  button.done.on{border-color:var(--ok);color:#fff;background:var(--ok)}
+  .flag{font-size:16px;color:#8a5a00;margin:8px 0 0}
+
+  .links{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  .links a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:60px;
+    border-radius:14px;text-decoration:none;font-size:20px;font-weight:700;color:#fff}
+  .links .line{background:#06c755}.links .yt{background:#222}
+  .safe{background:#fff;border-left:6px solid var(--red);border-radius:10px;padding:12px 14px;font-size:19px}
+  .safe li{margin:4px 0}
+  footer{font-size:15px;color:var(--muted);margin-top:24px}
+  @media (max-width:380px){ .sym{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>大俠中醫・居家小運動</h1>
+  <p>郭于賢醫師｜跟著影片，在家一起動一動</p>
+</div></header>
+
+<main class="wrap">
+  <h2><span class="step">1</span>哪裡不舒服？點一下</h2>
+  <div class="sym" id="sym"></div>
+
+  <h2 id="resTitle"><span class="step">2</span>點紅色按鈕看影片</h2>
+  <p id="hint"></p>
+  <div id="list"></div>
+
+  <h2>⚠️ 做運動前看一下</h2>
+  <ul class="safe">
+    <li>動作<b>慢慢做</b>，會痛就停，不要硬撐。</li>
+    <li>剛扭傷、紅腫發熱，先休息，回診問醫師。</li>
+    <li>胸悶如果合併<b>胸痛、喘、冒冷汗</b>，不要運動，馬上就醫。</li>
+    <li>站著做的動作，旁邊扶著椅子或牆壁比較安全。</li>
+  </ul>
+
+  <h2>更多影片・問醫師</h2>
+  <div class="links">
+    <a class="line" href="https://lin.ee/dUXqe2b" target="_blank" rel="noopener">LINE 加好友</a>
+    <a class="yt" href="https://www.youtube.com/@doctor.kuo8" target="_blank" rel="noopener">▶ YouTube 頻道</a>
+  </div>
+
+  <footer>
+    「適合誰」整理自每支影片的官方說明文字，不能取代醫師診斷。<br>
+    「今天做了」只記在這支手機，隔天會自動歸零。
+  </footer>
+</main>
+
+<script>
+/* 症狀 → 影片：依各影片 YouTube 說明文字整理 */
+const SYM = [
+  {k:'neck',  e:'🧣', t:'脖子、肩膀痠'},
+  {k:'hump',  e:'🐢', t:'富貴包、頭往前'},
+  {k:'back',  e:'🧍', t:'駝背、脊椎歪'},
+  {k:'waist', e:'🪑', t:'腰痠、久坐久站'},
+  {k:'hip',   e:'🚶', t:'髖卡卡、起身難'},
+  {k:'knee',  e:'🦵', t:'膝蓋不舒服'},
+  {k:'hand',  e:'✋', t:'手肘、手腕痠'},
+  {k:'ankle', e:'🦶', t:'腳踝僵、易扭到'},
+  {k:'chest', e:'🫁', t:'胸悶、肋骨痠'},
+  {k:'fit',   e:'❤️', t:'血糖、體重、體力'},
+];
+
+const V = [
+  {n:'肩關節運動篇（轉肩）', id:'NYRc80VEIWA', len:'1分39秒', s:['neck'],
+   f:'低頭看手機、肩頸痠痛、容易緊張的人'},
+  {n:'八字頸・頸部篇', id:'lo257nXLnEM', len:'2分33秒', s:['neck'],
+   f:'脖子緊、轉頭卡卡', note:'醫師建議搭配「轉肩運動」一起做'},
+  {n:'面壁思痛・頸椎矯正篇', id:'ZrgElCNFH50', len:'1分09秒', s:['neck','hump'],
+   f:'脖子太直、頸部肌肉緊繃'},
+  {n:'富貴包居家保健篇', id:'AV3Iq250fv8', len:'34秒', s:['hump','neck'],
+   f:'脖子沉重、肩膀緊、後頸隆起一塊', note:'練完記得熱敷'},
+  {n:'背肌・駝背訓練（超人篇）', id:'qCwNAsOdVME', len:'1分23秒', s:['back','hump'], pose:'趴著做',
+   f:'駝背、背部沒力、脊椎側彎'},
+  {n:'脊椎側彎居家矯正篇', id:'0waU46YKZxk', len:'55秒', s:['back'],
+   f:'身體歪一邊、肩頸緊、呼吸淺'},
+  {n:'脊椎搖擺篇', id:'igH0V9iPIxs', len:'1分15秒', s:['back','waist'],
+   f:'背部兩側肌肉緊、脊椎不靈活'},
+  {n:'轉腰運動・平躺篇', id:'VotHvydDegk', len:'1分26秒', s:['waist'], pose:'躺著做',
+   f:'久坐、久站後腰部緊繃'},
+  {n:'轉腰運動・站姿篇', id:'uoZxUhbyAEU', len:'1分38秒', s:['waist'], pose:'站著做',
+   f:'腰兩邊鬆緊不一樣、腰痠'},
+  {n:'小腹鍛鍊運動', id:'BiTdZ5RTxoY', len:'1分37秒', s:['waist'],
+   f:'腰痛看很久沒改善、骨盆前傾、肚子沒力'},
+  {n:'髖關節退化保健篇', id:'HtpJ29XgfKk', len:'44秒', s:['hip'],
+   f:'走路痛、從椅子起身困難、髖卡卡'},
+  {n:'髖關節運動篇', id:'Vc6Yoj8y47U', len:'1分43秒', s:['hip'],
+   f:'想增加髖關節活動度、延緩退化'},
+  {n:'髖關節運動・升級版', id:'Y3uiIWcsL-c', len:'1分39秒', s:['hip','waist'],
+   f:'腰痠、腿麻（髖不靈活會加重腰的負擔）', note:'基本版做順了再做這支'},
+  {n:'膝關節保健篇', id:'tosMhF8GGVo', len:'42秒', s:['knee'],
+   f:'膝蓋不舒服、想保養膝蓋'},
+  {n:'盤膝・膝關節篇', id:'rOVIQXHIrAE', len:'1分12秒', s:['knee'],
+   f:'膝關節緊、想放鬆膝蓋'},
+  {n:'拜佛肘運動篇', id:'i0eN3QfFIsY', len:'1分24秒', s:['hand'],
+   f:'手肘緊、彎伸不順'},
+  {n:'繞腕・腕關節篇', id:'pAECk8yU23A', len:'2分01秒', s:['hand'],
+   f:'常用手做家事、煮飯、手腕痠'},
+  {n:'旋踝・踝關節篇', id:'zuFpvCE9q60', len:'59秒', s:['ankle'],
+   f:'腳踝僵硬、容易扭到'},
+  {n:'開胸・胸廓運動篇', id:'qqxd4-G3kJs', len:'1分13秒', s:['chest'],
+   f:'胸悶、肋骨之間常常痠痛', note:'用呼吸配合動作'},
+  {n:'超慢跑運動', id:'bWm56Clz9lc', len:'1分06秒', s:['fit'],
+   f:'想改善血糖、保持肌肉量、強化心肺、減重',
+   flag:'小卡這格被手指擋住，這支是從醫師頻道找到的「超慢跑運動」，請對照紙卡確認。'},
+];
+
+const DONE_KEY = 'daxia-done-' + new Date().toLocaleDateString('zh-TW');
+const done = new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+let cur = null;
+
+const symEl = document.getElementById('sym');
+SYM.forEach(s=>{
+  const b=document.createElement('button');
+  b.innerHTML=`<span class="e">${s.e}</span><span>${s.t}</span>`;
+  b.setAttribute('aria-pressed','false'); b.dataset.k=s.k;
+  b.onclick=()=>pick(cur===s.k?null:s.k);
+  symEl.appendChild(b);
+});
+const all=document.createElement('button');
+all.className='all'; all.textContent='📋 全部 20 支影片'; all.dataset.k='';
+all.onclick=()=>pick(null); symEl.appendChild(all);
+
+function pick(k){
+  cur=k;
+  symEl.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed', String((b.dataset.k||null)===k)));
+  render();
+  if(k) document.getElementById('resTitle').scrollIntoView({behavior:'smooth'});
+}
+
+function render(){
+  const list=document.getElementById('list'), hint=document.getElementById('hint');
+  const vs = cur ? V.filter(v=>v.s.includes(cur)) : V;
+  if(cur){
+    const s=SYM.find(x=>x.k===cur);
+    hint.style.display='block';
+    hint.textContent=`「${s.t}」有 ${vs.length} 支影片，從第一支開始做就好。`;
+  } else hint.style.display='none';
+  list.innerHTML = vs.map(v=>`
+    <article class="card">
+      <h3>${v.n}</h3>
+      <div class="meta"><span class="tag">⏱ ${v.len}</span>${v.pose?`<span class="tag pose">${v.pose}</span>`:''}</div>
+      <p class="for"><b>適合：</b>${v.f}</p>
+      ${v.note?`<p class="note">💡 ${v.note}</p>`:''}
+      <div class="row">
+        <a class="play" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">▶ 看影片</a>
+        <button class="done ${done.has(v.id)?'on':''}" data-id="${v.id}">${done.has(v.id)?'✓ 做完了':'今天做了'}</button>
+      </div>
+      ${v.flag?`<p class="flag">⚠️ ${v.flag}</p>`:''}
+    </article>`).join('');
+  list.querySelectorAll('button.done').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.id; done.has(id)?done.delete(id):done.add(id);
+    localStorage.setItem(DONE_KEY, JSON.stringify([...done])); render();
+  });
+}
+render();
+</script>
+</body>
+</html>
